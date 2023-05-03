@@ -1,0 +1,54 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "16276a215a88dc02827011bfa585280ce7c0ead2fda0cacef9b04929c02aa297"
+    }
+  ],
+  "containerPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/IceMan.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "x86_64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx13.3",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "x86_64h",
+        "x86_64"
+      ],
+      "targetArchitecture" : "x86_64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData/IceMan/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData/IceMan/Build/Products",
+      "derivedDataPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData/IceMan/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData/IceMan/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/rileyarthur/Desktop/Books/IceMan-skeleton-mac/DerivedData/IceMan/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}
