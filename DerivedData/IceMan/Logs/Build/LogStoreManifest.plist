@@ -652,6 +652,40 @@
 			<key>uniqueIdentifier</key>
 			<string>32B348A1-8FE4-4367-9985-FABE43F806DD</string>
 		</dict>
+		<key>32BA7CA2-3D2F-4899-B401-5034CA38E5A4</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>32BA7CA2-3D2F-4899-B401-5034CA38E5A4.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>IceMan project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>IceMan</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build IceMan</string>
+			<key>timeStartedRecording</key>
+			<real>704842253.55756497</real>
+			<key>timeStoppedRecording</key>
+			<real>704842255.20071399</real>
+			<key>title</key>
+			<string>Build IceMan</string>
+			<key>uniqueIdentifier</key>
+			<string>32BA7CA2-3D2F-4899-B401-5034CA38E5A4</string>
+		</dict>
 		<key>3625436F-ED93-4B1B-9DE0-E18EE66CC798</key>
 		<dict>
 			<key>className</key>
@@ -1434,6 +1468,40 @@
 			<key>uniqueIdentifier</key>
 			<string>8CE09C47-A514-4AE9-A738-72C1CEC3E4A8</string>
 		</dict>
+		<key>9670DA8B-D2F6-4AB9-8767-0AC64563770F</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>9670DA8B-D2F6-4AB9-8767-0AC64563770F.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>IceMan project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>IceMan</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build IceMan</string>
+			<key>timeStartedRecording</key>
+			<real>704842512.59399199</real>
+			<key>timeStoppedRecording</key>
+			<real>704842513.95399201</real>
+			<key>title</key>
+			<string>Build IceMan</string>
+			<key>uniqueIdentifier</key>
+			<string>9670DA8B-D2F6-4AB9-8767-0AC64563770F</string>
+		</dict>
 		<key>9AE57604-BD60-4A89-8BBC-8EEEBEBD3A58</key>
 		<dict>
 			<key>className</key>
@@ -1773,6 +1841,40 @@
 			<string>Build IceMan</string>
 			<key>uniqueIdentifier</key>
 			<string>B50421E1-96FC-498A-B77D-65BF4BC3B3EF</string>
+		</dict>
+		<key>B6912262-7C3E-45CA-BB7D-BC24307064A0</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>B6912262-7C3E-45CA-BB7D-BC24307064A0.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>IceMan project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>IceMan</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build IceMan</string>
+			<key>timeStartedRecording</key>
+			<real>704842537.55247402</real>
+			<key>timeStoppedRecording</key>
+			<real>704842538.80892205</real>
+			<key>title</key>
+			<string>Build IceMan</string>
+			<key>uniqueIdentifier</key>
+			<string>B6912262-7C3E-45CA-BB7D-BC24307064A0</string>
 		</dict>
 		<key>B6EADC85-B728-415F-8362-0ADC855AFFD4</key>
 		<dict>

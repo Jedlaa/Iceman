@@ -22,12 +22,9 @@ boulder::boulder(StudentWorld*p, int startX, int startY) : Actor(p, IID_BOULDER,
 }
 
 bool Actor::checkBoundary(int x, int y){
-    cout << "Checking position (" << x << ", " << y << ")" << endl;
     if (x >= 0 && x < 60 && y >= 0 && y < 60){
-        cout << "Position (" << x << ", " << y << ") is valid" << endl;
         return true;
     }
-    cout << "Position (" << x << ", " << y << ") is invalid" << endl;
     return false;
 }
 //
