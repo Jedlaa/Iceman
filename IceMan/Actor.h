@@ -3,6 +3,8 @@
 
 #include "GraphObject.h"
 #include "StudentWorld.h"
+#include <vector>
+
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
@@ -96,15 +98,17 @@ public:
     WaterGun(StudentWorld* pointer, int x, int y, Direction d);
 };
 
-//class GoldNugget : public Actor {
-//public:
-//    GoldNugget(StudentWorld* pointer, int x, int y, bool isVisible, bool isPickableByIceman, bool isPermanent);
-//    virtual void doSomething();
-//
-//private:
-//    bool isVisible;
-//    bool isPickableByIceman;
-//    bool isPermanent;
-//};
+class GoldNugget : public Actor {
+public:
+    GoldNugget(StudentWorld* p, int startX, int startY);
+    virtual void doSomething();
+
+private:
+    std::vector<std::pair<int,int>> pos;
+    bool isVisible;
+    bool isPickableByIceman;
+    bool isPermanent;
+    
+};
 
 #endif // ACTOR_H_

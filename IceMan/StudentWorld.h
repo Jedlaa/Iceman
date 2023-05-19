@@ -29,6 +29,10 @@ public:
     virtual int move();
 
     virtual void cleanUp() {}
+    
+    virtual int icemanPosX();
+    
+    virtual int icemanPosY();
 
     virtual void setInfo();
 
@@ -36,13 +40,13 @@ public:
 
     void deleteIce(int x, int y);
 
-    //GoldNugget* createGoldNugget(int x, int y);
+    GoldNugget* createGoldNugget(int x, int y);
 
 private:
     IceMan* m_iceman;
     Ice* m_ice[64][64];
     Boulder* m_boulders[2];
-    //GoldNugget* m_goldNugget;
+    GoldNugget* m_goldNugget;
 };
 
 #endif // STUDENTWORLD_H_

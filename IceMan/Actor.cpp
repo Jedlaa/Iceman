@@ -71,11 +71,11 @@ WaterGun::WaterGun(StudentWorld* p, int x, int y, Direction d)
     : Actor(p, IID_WATER_SPURT, x, y, d, 1.0, 1) {}
 
 //// GoldNugget constructor
-//GoldNugget::GoldNugget(StudentWorld* p, int startX, int startY)
-//    : Actor(p, IID_GOLD, startX, startY, right, 1.0, 2) {
-//
-//    setVisible(false);
-//}
+GoldNugget::GoldNugget(StudentWorld* p, int startX, int startY)
+    : Actor(p, IID_GOLD, startX, startY, right, 1.0, 2) {
+        pos.push_back({startX, startY});
+    setVisible(false);
+}
 
 
 // Ice constructor
@@ -152,4 +152,15 @@ void IceMan::doSomething() {
             }
         }
     }
+}
+
+//nuggets do something
+void GoldNugget::doSomething(){
+    for (const auto& p : pos) {
+        if (getWorld()->icemanPosX() == p.first && getWorld()->icemanPosY() == p.second){
+            setVisible(true);
+            
+        }
+    }
+    
 }
