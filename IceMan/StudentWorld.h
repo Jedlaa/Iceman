@@ -1,6 +1,3 @@
-// StudentWorld.h
-// contains StudentWorld class declaration
-
 #ifndef STUDENTWORLD_H_
 #define STUDENTWORLD_H_
 
@@ -13,7 +10,6 @@ class IceMan;
 class Ice;
 class Boulder;
 class GoldNugget;
-
 
 class StudentWorld : public GameWorld
 {
@@ -29,9 +25,9 @@ public:
     virtual int move();
 
     virtual void cleanUp() {}
-    
+
     virtual int icemanPosX();
-    
+
     virtual int icemanPosY();
 
     virtual void setInfo();
@@ -42,11 +38,22 @@ public:
 
     GoldNugget* createGoldNugget(int x, int y);
 
+    bool checkBoulder(int x, int y);
+
+    IceMan* getIceMan() { return m_iceman; }
+
+    GoldNugget* getGoldNugget() { return m_goldNugget; }
+
+    double distance(int x1, int y1, int x2, int y2);    // used for checking radius of gold nugget, iceman, protesters
+
+    //void deleteNug();
+
 private:
     IceMan* m_iceman;
     Ice* m_ice[64][64];
     Boulder* m_boulders[2];
     GoldNugget* m_goldNugget;
+    //Protester* m_protester;
 };
 
 #endif // STUDENTWORLD_H_

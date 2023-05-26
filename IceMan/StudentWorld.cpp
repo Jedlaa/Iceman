@@ -1,11 +1,7 @@
-// StudentWorld.cpp
-// contains StudentWorld class implementation
-
 #include "StudentWorld.h"
 #include "Actor.h"
 #include <string>
 #include <sstream>
-
 #include <iomanip>
 #include <cstdlib>
 
@@ -29,8 +25,15 @@ void StudentWorld::deleteIce(int x, int y) {
     }
 }
 
+//void StudentWorld::deleteNug() {
+//    if (m_goldNugget != nullptr) {
+//        delete m_goldNugget;
+//        m_goldNugget = nullptr;
+//    }
+//}
+
 GoldNugget* StudentWorld::createGoldNugget(int x, int y) {
-    m_goldNugget = new GoldNugget(this, 30,30); //temporary testing position
+    m_goldNugget = new GoldNugget(this, 30, 30, true); //temporary testing position
     return m_goldNugget;
 }
 
@@ -49,8 +52,6 @@ int StudentWorld::init() {
         for (int j = 4; j < 60; j++)
         {
             deleteIce(i, j);
-            //delete m_ice[i][j];
-            //m_ice[i][j] = nullptr;
         }
 
     // Randomly place 2 boulders
@@ -74,6 +75,7 @@ int StudentWorld::init() {
 
     setInfo();
     createGoldNugget(30, 30); //temporary test
+
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -85,11 +87,15 @@ bool StudentWorld::checkAlive() {
 }
 
 int StudentWorld::move() {
+    // Updating display text
+    setInfo();
+
     // IceMan's actions as long as player is alive
     while (checkAlive()) {
         m_iceman->doSomething();
         m_goldNugget->doSomething();
         return GWSTATUS_CONTINUE_GAME;
+
     }
 
     // If not alive, decrement lives
@@ -97,18 +103,15 @@ int StudentWorld::move() {
     return GWSTATUS_CONTINUE_GAME;
 }
 
-
 //Getting the iceman's X position
-int StudentWorld::icemanPosX(){
+int StudentWorld::icemanPosX() {
     return m_iceman->getX();
 }
 
-
 //Getting the iceman's Y positition
-int StudentWorld::icemanPosY(){
+int StudentWorld::icemanPosY() {
     return m_iceman->getY();
 }
-
 
 void StudentWorld::setInfo() {
     int level = getLevel();
@@ -119,14 +122,30 @@ void StudentWorld::setInfo() {
     int nuggets = m_iceman->getNug();
     int score = getScore();
 
-    // String with game info
     ostringstream oss;
     oss << "Lvl: " << setw(2) << level << "  Lives: " << setw(1) << lives << "  Hlth: " << setw(3) << health * 10 << "%  Wtr: " << setw(2) << water << "  Gld: " << setw(2) << nuggets << "  Oil Left: " << "  Sonar: " << setw(2) << sonar << "  Scr: ";
     oss.fill('0');
     oss << setw(6) << score << endl;
     string s = oss.str();
-
-    // Setting game status text
     setGameStatText(s);
 }
-// Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
+
+bool StudentWorld::checkBoulder(int x, int y) {
+    // Checking if boulder at specified position
+    for (int i = 0; i < 2; i++) {
+        if (m_boulders[i] != nullptr) {
+            int boulderX = m_boulders[i]->getX();
+            int boulderY = m_boulders[i]->getY();
+            if (x >= boulderX - 3 && x <= boulderX + 3 && y >= boulderY - 3 && y <= boulderY + 3) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+double StudentWorld::distance(int x1, int y1, int x2, int y2) {
+    double xx = x2 - x1;
+    double yy = y2 - y1;
+    return sqrt((xx * xx) + (yy * yy));
+}

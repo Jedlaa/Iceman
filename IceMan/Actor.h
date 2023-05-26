@@ -5,18 +5,17 @@
 #include "StudentWorld.h"
 #include <vector>
 
-
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
-enum State {
-    stable = 1,
-    waiting = 2,
-    falling = 3,
-    dead = 0,
-    active = 4,
-    pickablebyiceman = 5,
-    pickablebyprotesters = 6,
-    bribed = 7
+enum State { 
+    stable = 1, 
+    waiting = 2, 
+    falling = 3, 
+    dead = 0, 
+    active = 4, 
+    pickablebyiceman = 5, 
+    pickablebyprotesters = 6, 
+    bribed = 7 
 };
 
 
@@ -24,19 +23,14 @@ class Actor : public GraphObject {
 public:
     // Constructor with explicit params
     Actor(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
-
     // Constructor with StudentWorld params
     Actor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
-
     // Accessor for StudentWorld ptr
     virtual StudentWorld* getWorld() { return m_studentworld; }
-
     // Check if coords are within game bounds
     virtual bool checkBoundary(int x, int y);
-
     // Check if there's Ice at specified coords & direction
     virtual bool checkIce(int x, int y, Direction dir);
-
     // Move in specified direction
     virtual void move(Direction dir);
 
@@ -47,31 +41,29 @@ private:
 
 class Agent : public Actor {
 public:
-    // Constructor with explicit params
-    Agent(StudentWorld* p, int startX, int startY, Direction dir, int imageID, unsigned int hitpoints)
-        : Actor(p, imageID, startX, startY, dir, 1.0, 0) {      // m_health(hitpoints)?
+    Agent(StudentWorld* p, int startX, int startY, Direction dir, int imageID, unsigned int hitpoints) 
+        : Actor(p, imageID, startX, startY, dir, 1.0, 0) {
         m_health = 10;
-    }
-    // Accessor for hp
-    virtual int getHealth() { return m_health; }
 
+    }
+    virtual int getHealth() { return m_health; }
 private:
     int m_health;
 };
 
 class IceMan : public Agent {
 public:
-    // Constructor with StudentWorld params
-    IceMan(StudentWorld* p);
-
-    // IceMan's actions
-    virtual void doSomething();
-
-    // Destroys Ice in specified coords & direction
-    virtual void destroyIce(int x, int y, Direction dir);
+    IceMan(StudentWorld* p);                                // Constructor with StudentWorld params
+    virtual void doSomething();                             // IceMan's actions
+    virtual void destroyIce(int x, int y, Direction dir);   // Destroys Ice in specified coords & direction
+    
+    // Pick ups
+    void addSonar() { m_sonar++; }
+    void addWater() { m_water++; }
+    void addNug() { m_nuggets++; }
 
     // Accessors for inventory
-    virtual int getSonar() { return m_sonar; }
+    virtual int getSonar() { return m_sonar; }              
     virtual int getWater() { return m_water; }
     virtual int getNug() { return m_nuggets; }
 
@@ -93,22 +85,26 @@ public:
 private:
 };
 
+
 class WaterGun : public Actor {
 public:
     WaterGun(StudentWorld* pointer, int x, int y, Direction d);
+
 };
 
 class GoldNugget : public Actor {
 public:
-    GoldNugget(StudentWorld* p, int startX, int startY);
+    GoldNugget(StudentWorld* p, int startX, int startY, bool flag);
     virtual void doSomething();
 
 private:
-    std::vector<std::pair<int,int>> pos;
+    std::vector<std::pair<int, int>> pos;
+    bool isAlive;
     bool isVisible;
-    bool isPickableByIceman;
-    bool isPermanent;
-    
+    bool soundPlayed;
+    bool isTemporary;
+    bool pickUpStatus;  // True if Iceman can pickup, False if protester can pickup
+    int lifetimeTicks;  // dropped GoldNuggets are temp and have a lifetime of 100
 };
 
 #endif // ACTOR_H_
