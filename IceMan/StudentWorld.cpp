@@ -33,7 +33,7 @@ void StudentWorld::deleteIce(int x, int y) {
 //}
 
 GoldNugget* StudentWorld::createGoldNugget(int x, int y) {
-    m_goldNugget = new GoldNugget(this, 30, 30, true); //temporary testing position
+    m_goldNugget = new GoldNugget(this, x, y, true); //temporary testing position
     return m_goldNugget;
 }
 
@@ -72,9 +72,16 @@ int StudentWorld::init() {
             deleteIce(i, j);
         }
     }
-
     setInfo();
-    createGoldNugget(30, 30); //temporary test
+    int tmp = getLevel() / 2;
+    int numNug = max(tmp, 2);
+
+    for (int i = 0; i<numNug;i++){
+        int x = rand()%61;
+        int y = rand()%57;
+        Actors.push_back(createGoldNugget(x, y));
+
+    }
 
     return GWSTATUS_CONTINUE_GAME;
 }
@@ -93,9 +100,12 @@ int StudentWorld::move() {
     // IceMan's actions as long as player is alive
     while (checkAlive()) {
         m_iceman->doSomething();
-        m_goldNugget->doSomething();
+        //        m_goldNugget->doSomething();
+        list<Actor*>::iterator tmp = Actors.begin();
+        while(tmp != Actors.end()){auto it = *tmp; it->doSomething(); tmp++;}
+        for(int i = 0;i < 2;i++){m_boulders[i]->doSomething();}
         return GWSTATUS_CONTINUE_GAME;
-
+        
     }
 
     // If not alive, decrement lives
@@ -112,6 +122,7 @@ int StudentWorld::icemanPosX() {
 int StudentWorld::icemanPosY() {
     return m_iceman->getY();
 }
+
 
 void StudentWorld::setInfo() {
     int level = getLevel();

@@ -33,6 +33,12 @@ public:
     virtual bool checkIce(int x, int y, Direction dir);
     // Move in specified direction
     virtual void move(Direction dir);
+    //Setting the state for the actor
+    virtual void setState(State s){state = s;}
+    // Retrieval function for state
+    virtual State getState(){return state;}
+    
+    virtual void doSomething(){};
 
 private:
     State state;
@@ -77,6 +83,11 @@ private:
 class Boulder : public Actor {
 public:
     Boulder(StudentWorld* p, int startX, int startY);
+    virtual void doSomething();
+    virtual void decCount(){countDown--;}
+    virtual int getCount(){return countDown;}
+private:
+    int countDown = 30;
 };
 
 class Ice : public Actor {

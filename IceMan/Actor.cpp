@@ -60,8 +60,10 @@ IceMan::IceMan(StudentWorld* p)
 }
 
 // Boulder constructor
-Boulder::Boulder(StudentWorld* p, int startX, int startY) 
-    : Actor(p, IID_BOULDER, startX, startY, down, 1.0, 10.0) {}
+Boulder::Boulder(StudentWorld* p, int startX, int startY)
+    : Actor(p, IID_BOULDER, startX, startY, down, 1.0, 10.0) {
+        setState(stable);
+    }
 
 // WaterGun constructor
 WaterGun::WaterGun(StudentWorld* p, int x, int y, Direction d) 
@@ -73,8 +75,37 @@ Ice::Ice(int startX, int startY)
 
 // Check if there's Ice at specified coords & direction
 bool Actor::checkIce(int x, int y, Direction dir) {
-    if (getWorld()->getIce(x, y) != nullptr) {
-        return true;
+    if(dir == right){
+        for (int i= 0; i < 4; i++){
+            if(getWorld()->getIce(x+4, y+i) != nullptr){
+                return true;
+            }
+        }
+        return false;
+    }
+    if(dir == left){
+        for (int i = 0; i < 4; i++){
+            if(getWorld()->getIce(x-1, y+i)){
+                return true;
+            }
+        }
+        return false;
+    }
+    if(dir == up){
+        for (int i = 0; i < 4; i++){
+            if(getWorld()->getIce(x+i, y+4) != nullptr){
+                return true;
+            }
+        }
+        return false;
+    }
+    if (dir == down){
+        for (int i = 0; i < 4; i++){
+            if (getWorld()->getIce(x+i, y-1) != nullptr){
+                return true;
+            }
+        }
+        return false;
     }
     return false;
 }
@@ -191,7 +222,7 @@ void GoldNugget::doSomething() {
         }
         // increase player score by 10 points
         getWorld()->increaseScore(10);
-
+        setVisible(false);
         // tell iceman object that it received a nugget (update inv)
         getWorld()->getIceMan()->addNug();
         return;
@@ -222,5 +253,42 @@ void GoldNugget::doSomething() {
         isAlive = false; //setState(dead);
         return;
     }
+}
 
+void Boulder::doSomething(){
+//    if (getState() == stable){
+//        //If no ice we start the if statment
+//        if(!checkIce(getX(), getY(), down)){
+//            //checking icrementally on the way down allowing boulder to "fall"
+//            while(!checkIce(getX(), getY(), down)){
+//                //moving down keeping x cause boulders to shimmy
+//                moveTo(getX(), getY()-1);
+//            }
+//        }
+//    }
+    
+    
+    if(getState() == waiting){
+        if (countDown == 0){
+            setState(falling);
+        }
+        decCount();
+    }
+    if(getState() == falling){
+        if(!checkIce(getX(), getY(), down)){
+            getWorld()->playSound(SOUND_FALLING_ROCK);
+            //checking icrementally on the way down allowing boulder to "fall"
+            while(!checkIce(getX(), getY(), down)){
+                //moving down keeping x cause boulders to shimmy
+                moveTo(getX(), getY()-1);
+            }
+        }
+    }
+    if(checkIce(getX(), getY(), down)){
+        return;
+    }
+    else{
+        setState(waiting);
+        return;
+    }
 }
