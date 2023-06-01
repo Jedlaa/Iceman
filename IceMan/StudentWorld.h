@@ -12,6 +12,7 @@ class Ice;
 class Boulder;
 class GoldNugget;
 class Actor;
+class SonarKit;
 
 class StudentWorld : public GameWorld
 {
@@ -19,6 +20,8 @@ public:
     StudentWorld(std::string assetDir);
 
     virtual void setLives() {}
+    
+    virtual void revealHidden(int X, int Y, int radius);
 
     virtual bool checkAlive();
 
@@ -54,8 +57,10 @@ private:
     std::list<Actor*> Actors;
     IceMan* m_iceman;
     Ice* m_ice[64][64];
-    Boulder* m_boulders[2];
+    std::vector<Boulder*> m_boulders;
     GoldNugget* m_goldNugget;
+    SonarKit* m_sonar;
+    int G;
 //    std::list<GoldNugget*> m_goldNuggets;
     
     //Protester* m_protester;

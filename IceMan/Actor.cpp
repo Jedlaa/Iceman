@@ -73,6 +73,12 @@ WaterGun::WaterGun(StudentWorld* p, int x, int y, Direction d)
 Ice::Ice(int startX, int startY) 
     : Actor(IID_ICE, startX, startY, right, 0.25, 3) {}
 
+SonarKit::SonarKit(StudentWorld* p, int startX, int startY)
+    : ActivatingObject(p, startX, startY, IID_SONAR, SOUND_SONAR, true, false, false){
+        setTicksToLive();
+        setVisible(true);
+    }
+
 // Check if there's Ice at specified coords & direction
 bool Actor::checkIce(int x, int y, Direction dir) {
     if(dir == right){
@@ -177,6 +183,10 @@ void IceMan::doSomething() {
                 }
             }
         }
+        else if (move == 'z'){
+            getWorld()->revealHidden(getX(), getY(), 12);
+            decSonar();
+        }
     }
 }
 
@@ -224,7 +234,8 @@ void GoldNugget::doSomething() {
         getWorld()->increaseScore(10);
         setVisible(false);
         // tell iceman object that it received a nugget (update inv)
-        getWorld()->getIceMan()->addNug();
+        getWorld()->getIceMan()->
+        addNug();
         return;
     }
     //// 4. Check if Gold Nugget is pickupable by Protesters (PickupStatus = false) & is within a radius of 3.0 from Protester
@@ -255,25 +266,18 @@ void GoldNugget::doSomething() {
     }
 }
 
+
+
+//fixed boulder problem
 void Boulder::doSomething(){
-//    if (getState() == stable){
-//        //If no ice we start the if statment
-//        if(!checkIce(getX(), getY(), down)){
-//            //checking icrementally on the way down allowing boulder to "fall"
-//            while(!checkIce(getX(), getY(), down)){
-//                //moving down keeping x cause boulders to shimmy
-//                moveTo(getX(), getY()-1);
-//            }
-//        }
-//    }
-    
-    
     if(getState() == waiting){
         if (countDown == 0){
             setState(falling);
+            return;
         }
         decCount();
     }
+    
     if(getState() == falling){
         if(!checkIce(getX(), getY(), down)){
             getWorld()->playSound(SOUND_FALLING_ROCK);
@@ -282,13 +286,38 @@ void Boulder::doSomething(){
                 //moving down keeping x cause boulders to shimmy
                 moveTo(getX(), getY()-1);
             }
+            setState(stable);
+            setCount();
         }
     }
-    if(checkIce(getX(), getY(), down)){
+    
+    if(checkIce(getX(), getY(), down)){return;}
+    else{setState(waiting);return;}
+}
+
+
+void SonarKit::doSomething(){
+    //if ticks are == 0 then we set the sonar kit to 0 and dead
+    if (getTicks() == 0){
+        setVisible(false);
+        setDead();
         return;
     }
-    else{
-        setState(waiting);
-        return;
+    //if iceman is within 3 units of the sonarkit then we setvisibility to false as well as set dead while incrementing values accordingly
+    if (getWorld() != nullptr && getWorld()->icemanPosY() - getY() <= 3 && getWorld() != nullptr && (getWorld()->icemanPosX() - getX() <= 3) && getState() != dead) {
+        setVisible(false);
+        setState(dead);
+        getWorld()->playSound(SOUND_GOT_GOODIE);
+        getWorld()->increaseScore(75);
+        getWorld()->getIceMan()->addSonar();
     }
+    //if essentially nothing happens then we decticks to decrease time it is alive
+    else {decTicks();}
+}
+
+
+void ActivatingObject::setTicksToLive(){
+    //formula given in documentation for number of ticks to live
+    int tmp = getWorld()->getLevel();
+    ticks = max(100, 300 - 10*tmp);
 }
