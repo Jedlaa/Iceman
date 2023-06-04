@@ -89,6 +89,11 @@ OilBarrel::OilBarrel(StudentWorld* p, int startX, int startY)
         setVisible(false);
     }
 
+WaterPool::WaterPool(StudentWorld* p, int startX, int startY)
+: ActivatingObject(p, startX, startY, IID_WATER_POOL, SOUND_GOT_GOODIE, true, false, true){
+    setVisible(true);
+    setState(stable);
+}
 
 // Check if there's Ice at specified coords & direction
 bool Actor::checkIce(int x, int y, Direction dir) {
@@ -434,6 +439,7 @@ bool RegularProtester::decHealth(int v)
     }
     return true;
 }
+
 
 void ActivatingObject::setTicksToLive(){
     //formula given in documentation for number of ticks to live

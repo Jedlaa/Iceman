@@ -77,6 +77,8 @@ int StudentWorld::init() {
     
     setInfo();
     
+    C=getLevel()*25+300; // chance of adding goodies
+
     // Creating gold nuggets
     int tmp = 5 - getLevel() / 2;
     G = max(tmp, 2);
@@ -86,6 +88,7 @@ int StudentWorld::init() {
         y = rand()%57;
         Actors.push_back(createGoldNugget(x, y));
     }
+    
     
     // Creating oil barrels
     tmp = getLevel();
@@ -119,25 +122,37 @@ int StudentWorld::move() {
         m_iceman->doSomething();
         
         //creating a traversal iterator
-        list<Actor*>::iterator tmp = Actors.begin();
+        auto tmp = Actors.begin();
         
         //while we aren't at the end call each actors doSomething() reduce typing
         while(tmp != Actors.end()){auto it = *tmp; it->doSomething(); tmp++;}
         
-        //problem here seems like sonars get called very often causing multiple sonars to exist in one location
-        if (rand() % G == 0 && rand() % 5 == 0) {
-            bool isArea = true;
-            for (const auto& actor : Actors) {
-                if (actor->getX() == 0 && actor->getY() == 60) {
-                    isArea = false;
-                    break;
+        if (rand() % C == 0){
+            if(rand() % 5 == 0) {
+                bool isArea = true;
+                for (const auto& actor : Actors) {
+                    if (actor->getX() == 0 && actor->getY() == 60) {
+                        isArea = false;
+                        break;
+                    }
+                }
+                if (isArea) {
+                    SonarKit* sonar = new SonarKit(this, 0, 60);
+                    Actors.push_back(sonar);
                 }
             }
-            if (isArea) {
-                SonarKit* sonar = new SonarKit(this, 0, 60);
-                Actors.push_back(sonar);
+            else
+            {
+                int x=rand()%61; int y=rand()%61;
+                while (!randompostionclear(x, y)) //keep generating new position if not clear.
+                {
+                    x=rand()%61; y=rand()%61;
+                }
+                WaterPool *water= new WaterPool(this, x,y);
+                Actors.push_back(water);
             }
         }
+            
         
         if (barrelsLeft() == 0){
             playSound(SOUND_FINISHED_LEVEL);
@@ -249,6 +264,18 @@ void StudentWorld::cleanUp()
         delete *p;
         p=Actors.erase(p);
     }
+}
+
+bool StudentWorld::randompostionclear(int x, int y)
+{
+    
+    for (int i=0;i<4;i++)
+        for (int j=0;j<4;j++)
+        {
+            if (m_ice[x+i][y+j]!=nullptr)
+                return false;
+        }
+    return true;
 }
 
 

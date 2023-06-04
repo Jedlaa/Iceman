@@ -16,6 +16,7 @@ class GoldNugget;
 class Actor;
 class SonarKit;
 class OilBarrel;
+class WaterPool;
 class RegularProtester;
 
 
@@ -75,6 +76,9 @@ public:
     void CreateSquirt(int x, int y, GraphObject::Direction dir);
     
     bool squirtAnnoy(int x, int y);
+    
+    bool randompostionclear(int x, int y);
+
 
 
 
@@ -90,6 +94,7 @@ private:
     OilBarrel* m_oil;
     int G; //number of nuggets
     int L; //number of barrels
+    int C; // chance of adding goodies
     int barrels;
     RegularProtester* m_regprotester;
     int m_ticksSinceLastShout;
