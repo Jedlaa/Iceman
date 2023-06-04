@@ -73,6 +73,9 @@ public:
     void flagRecentlyShouted();
     
     void CreateSquirt(int x, int y, GraphObject::Direction dir);
+    
+    bool squirtAnnoy(int x, int y);
+
 
 
     //void createProtester(int level);

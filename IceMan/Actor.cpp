@@ -48,7 +48,7 @@ RegularProtester::RegularProtester(StudentWorld* p)
     : Agent(p, 60, 60, left, IID_PROTESTER, 5) {
     setVisible(true);
     numSquaresToMoveInCurrentDirection = getWorld()->randInt(8, 60); // random int between 8 - 60
-    m_health = 5;                               // 5 hp
+    setHealth(5);// 5 hp
     leaveOilFieldState = false;                // false
     isAlive = true;
     ticksToWaitBetweenMoves = max(0, static_cast<int>(3 - getWorld()->getLevel() / 4)); // static_cast bc max() uses int and unsigned int
@@ -405,7 +405,9 @@ void SonarKit::doSomething(){
 
 void Squirt::doSomething()
 {
-    //if (getWorld()->squirtannoyprotesters(getX(), getY())){setState(dead); return ;}
+    if (getWorld()->squirtAnnoy(getX(), getY())){
+        setState(dead);
+    }
     if (getCount() == 0) {
         setState(dead);
         setVisible(false);
@@ -416,11 +418,20 @@ void Squirt::doSomething()
     }
     move(getDirection());
     CountminusOne();
-    cout << getCount() << endl;
     return;
 }
 
 
+bool RegularProtester::decHealth(int v)
+{
+    Agent::decHealth(v);
+    
+    if (getHealth()<=0 && v==2)//hit by squirt
+    {
+        getWorld()->increaseScore(100);
+    }
+    return true;
+}
 
 void ActivatingObject::setTicksToLive(){
     //formula given in documentation for number of ticks to live

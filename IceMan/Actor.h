@@ -55,6 +55,10 @@ public:
     void CountminusOne(){countdown--; }
     
     int getCount(){return countdown;}
+    
+    virtual bool annoyable(){return false;}
+    
+    virtual bool decHealth(int hit){return false;}
 
 
 private:
@@ -67,10 +71,16 @@ class Agent : public Actor {
 public:
     Agent(StudentWorld* p, int startX, int startY, Direction dir, int imageID, unsigned int hitpoints) 
         : Actor(p, imageID, startX, startY, dir, 1.0, 0) {
-        m_health = 10;
+        m_health = hitpoints;
 
     }
     virtual int getHealth() { return m_health; }
+    
+    virtual bool annoyable(){return true;}
+    
+    virtual void setHealth(int health){m_health = health;}
+    
+    virtual bool decHealth(int hit){m_health-=hit; return true;}
 private:
     int m_health;
 };
@@ -113,10 +123,11 @@ class RegularProtester : public Agent {
 public:
     RegularProtester(StudentWorld* p);
     virtual void doSomething();
+    virtual bool decHealth(int hit);
 
 private:
     int numSquaresToMoveInCurrentDirection; // between 8 - 60
-    int m_health;                           // 5 hp
+    //int m_health;                           // 5 hp
     bool leaveOilFieldState;                // false
     bool isAlive;
     int ticksToWaitBetweenMoves;

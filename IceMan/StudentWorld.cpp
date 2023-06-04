@@ -295,3 +295,20 @@ void StudentWorld::CreateSquirt(int x, int y, GraphObject::Direction dir)
     auto squirt = new Squirt (this,x, y, dir);
     Actors.push_back(squirt);
 }
+
+bool StudentWorld::squirtAnnoy(int x, int y){
+    bool b = false;
+    auto p = Actors.begin();
+    for (;p!=Actors.end(); p++){
+        if ((*p)->annoyable()==true )
+        {
+            if (sqrt(((*p)->getX()-x)*((*p)->getX()-x) + ((*p)->getY()-y)*((*p)->getY()-y))<=3.0)
+            {
+                (*p)->decHealth(2);
+                //if ((*p)->gethealth()>0) playSound(SOUND_PROTESTER_ANNOYED);
+                b=true;
+            }
+        }
+    }
+    return b;
+}
