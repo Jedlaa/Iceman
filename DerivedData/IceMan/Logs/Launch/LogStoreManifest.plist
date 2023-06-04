@@ -996,6 +996,51 @@
 			<key>uniqueIdentifier</key>
 			<string>D1A3B392-570C-49FF-9934-261D4FFBC469</string>
 		</dict>
+		<key>D74CB2B4-81A0-4381-BB3E-CE3BE05CCEE8</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>DB52D7F9-ADD8-44C0-927E-62346CEB930E</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-IceMan-2023.06.04_15-27-32--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>IceMan project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>IceMan</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run IceMan</string>
+			<key>timeStartedRecording</key>
+			<real>707610452.92297006</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run IceMan</string>
+			<key>uniqueIdentifier</key>
+			<string>D74CB2B4-81A0-4381-BB3E-CE3BE05CCEE8</string>
+		</dict>
 		<key>D809164F-20CC-4A6A-BD4D-6CCE4F142435</key>
 		<dict>
 			<key>auxiliaryLogUniqueIdentifier</key>
@@ -1130,6 +1175,51 @@
 			<string>Run IceMan</string>
 			<key>uniqueIdentifier</key>
 			<string>E0B73F94-F4E4-4526-B218-3BCF251BBD70</string>
+		</dict>
+		<key>F232C836-BD15-4C1F-A24C-14F9CFB61697</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>8B1181BE-E077-4E81-ABAC-F3AE418900C9</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-IceMan-2023.06.04_15-28-40--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>IceMan project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>IceMan</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run IceMan</string>
+			<key>timeStartedRecording</key>
+			<real>707610520.49071896</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run IceMan</string>
+			<key>uniqueIdentifier</key>
+			<string>F232C836-BD15-4C1F-A24C-14F9CFB61697</string>
 		</dict>
 		<key>F7BC0099-343C-4AC3-9F7D-E2B3F603DFAD</key>
 		<dict>

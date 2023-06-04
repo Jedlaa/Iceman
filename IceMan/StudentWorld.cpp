@@ -44,6 +44,7 @@ int StudentWorld::init() {
     int x,y;
     m_iceman = new IceMan(this);
     
+    
     // Creating Ice arena
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 60; j++) {
@@ -78,6 +79,8 @@ int StudentWorld::init() {
     setInfo();
     
     C=getLevel()*25+300; // chance of adding goodies
+    int protester = 2+getLevel()*1.5;
+    P=min(15, protester); // num protesters
 
     // Creating gold nuggets
     int tmp = 5 - getLevel() / 2;
@@ -88,6 +91,10 @@ int StudentWorld::init() {
         y = rand()%57;
         Actors.push_back(createGoldNugget(x, y));
     }
+    
+    
+    auto* Pro = new RegularProtester(this);
+    Actors.push_back(Pro);
     
     
     // Creating oil barrels

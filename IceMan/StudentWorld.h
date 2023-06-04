@@ -95,7 +95,9 @@ private:
     int G; //number of nuggets
     int L; //number of barrels
     int C; // chance of adding goodies
+    int P; // num of protesters 
     int barrels;
+    
     RegularProtester* m_regprotester;
     int m_ticksSinceLastShout;
 
