@@ -42,7 +42,11 @@ public:
     //Can an actor reveal goodies by sonar
     virtual bool revealablebysonar() const {return false;} // it can't
     
+    virtual bool needsToBePikcedUpToFinishLevel() const{return false;}
+
     virtual void doSomething(){};
+    
+    virtual ~Actor(){}
 
 private:
     State state;
@@ -140,7 +144,7 @@ public:
     }
     virtual void move(){}
     void setTicksToLive();
-    void setDead(){isAlive = false;}
+    void setDead(){isAlive = false; setState(dead); setVisible(false);}
     bool getStatus(){return isAlive;}
     int getTicks(){return ticks;}
     void decTicks(){ticks--;}
@@ -153,7 +157,7 @@ private:
 class OilBarrel : public ActivatingObject{
 public:
     OilBarrel(StudentWorld* p, int startX, int startY);
-    virtual void doSomething(){}
+    virtual void doSomething();
     virtual void move(){}
     virtual bool revealablebysonar() const {return true;}
     virtual bool needsToBePikcedUpToFinishLevel() const{return true;}

@@ -18,36 +18,20 @@ Actor::Actor(StudentWorld* p, int imageID, int startX, int startY, Direction dir
 }
 
 // Move in specified direction
-void Actor::move(Direction d)
-{
-    if (d == down)
-    {
-        setDirection(down); 
-        moveTo(getX(), getY() - 1);
-    }
-    else if (d == up)
-    {
-        setDirection(up); 
-        moveTo(getX(), getY() + 1);
-    }
-    else if (d == left)
-    {
-        setDirection(left); 
-        moveTo(getX() - 1, getY());
-    }
-    else if (d == right)
-    {
-        setDirection(right); 
-        moveTo(getX() + 1, getY());
-    }
+void Actor::move(Direction d) {
+    setDirection(d);
+    int xMove = 0;
+    int yMove = 0;
+    if (d == down) yMove = -1;
+    else if (d == up) yMove = 1;
+    else if (d == left) xMove = -1;
+    else if (d == right) xMove = 1;
+    moveTo(getX() + xMove, getY() + yMove);
 }
 
 // Check coords are within game bounds
 bool Actor::checkBoundary(int x, int y) {
-    if (x >= 0 && x < 62 && y >= 0 && y < 60) {
-        return true;
-    }
-    return false;
+    return x >= 0 && x < 62 && y >= 0 && y < 60;
 }
 
 
@@ -73,11 +57,20 @@ WaterGun::WaterGun(StudentWorld* p, int x, int y, Direction d)
 Ice::Ice(int startX, int startY) 
     : Actor(IID_ICE, startX, startY, right, 0.25, 3) {}
 
+
+//SonarKit
 SonarKit::SonarKit(StudentWorld* p, int startX, int startY)
     : ActivatingObject(p, startX, startY, IID_SONAR, SOUND_SONAR, true, false, false){
         setTicksToLive();
         setVisible(true);
     }
+
+//Barrel of oil Constructor
+OilBarrel::OilBarrel(StudentWorld* p, int startX, int startY)
+    : ActivatingObject(p, startX, startY, IID_BARREL, SOUND_FOUND_OIL, true, false, true){
+        setVisible(false);
+    }
+
 
 // Check if there's Ice at specified coords & direction
 bool Actor::checkIce(int x, int y, Direction dir) {
@@ -216,15 +209,16 @@ void GoldNugget::doSomething() {
 
     // 2. If gold nugget not currently visable and iceman is within 4 units, then
         // gold nugget must make itself visible & return
-    if (!isVisible && getWorld()->distance(getX(), getY(), getWorld()->icemanPosY(), getWorld()->icemanPosY()) <= 10.0) {
+    if (!isVisible && getWorld()->distance(getX(), getY(), getWorld()->icemanPosY(), getWorld()->icemanPosY()) <= 4.0) {
         setVisible(true);
-        //return;
+        return;
     }
 
     // 3. Check if Gold Nugget is pickupable by Iceman (PickupStatus = true) & within a radius of 3.0
     if (pickUpStatus == true && getWorld()->distance(getX(), getY(), getWorld()->icemanPosX(), getWorld()->icemanPosY()) <= 3.0) {
         // GoldNugget state to dead (to be removed from game at end of current tick)
         isAlive = false; //setState(dead);
+        setState(dead);
         // play sound effect on pickup
         if (soundPlayed == false) {
             getWorld()->playSound(SOUND_GOT_GOODIE);
@@ -268,7 +262,6 @@ void GoldNugget::doSomething() {
 
 
 
-//fixed boulder problem
 void Boulder::doSomething(){
     if(getState() == waiting){
         if (countDown == 0){
@@ -296,16 +289,29 @@ void Boulder::doSomething(){
 }
 
 
+void OilBarrel::doSomething(){
+    if (getWorld()->distance(getX(), getY(), getWorld()->icemanPosX(), getWorld()->icemanPosY()) == 4.0 && getState() != dead) {
+        setVisible(true);
+        return;
+    }
+    if (getWorld()->distance(getX(), getY(), getWorld()->icemanPosX(), getWorld()->icemanPosY()) <= 3.0 && getState() != dead) {
+        setDead();
+        getWorld()->playSound(SOUND_FOUND_OIL);
+        getWorld()->increaseScore(1000);
+        getWorld()->decBarrels();
+    }
+    
+}
+
+
 void SonarKit::doSomething(){
     //if ticks are == 0 then we set the sonar kit to 0 and dead
     if (getTicks() == 0){
-        setVisible(false);
         setDead();
         return;
     }
     //if iceman is within 3 units of the sonarkit then we setvisibility to false as well as set dead while incrementing values accordingly
-    if (getWorld() != nullptr && getWorld()->icemanPosY() - getY() <= 3 && getWorld() != nullptr && (getWorld()->icemanPosX() - getX() <= 3) && getState() != dead) {
-        setVisible(false);
+    if (getWorld() != nullptr && getWorld()->icemanPosY() - getY() <= 3 && getWorld() != nullptr && getWorld()->icemanPosX() - getX() <= 3 && getState() != dead) {
         setState(dead);
         getWorld()->playSound(SOUND_GOT_GOODIE);
         getWorld()->increaseScore(75);

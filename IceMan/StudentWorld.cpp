@@ -34,75 +34,71 @@ void StudentWorld::deleteIce(int x, int y) {
 //}
 
 GoldNugget* StudentWorld::createGoldNugget(int x, int y) {
-    m_goldNugget = new GoldNugget(this, x, y, true); //temporary testing position
+    m_goldNugget = new GoldNugget(this, x, y, true);
     return m_goldNugget;
 }
 
 int StudentWorld::init() {
+    
+    int x,y;
     m_iceman = new IceMan(this);
-
-    // Creating Ice
+    
+    // Creating Ice arena
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 60; j++) {
             m_ice[i][j] = new Ice(i, j);
         }
     }
-
-    // Removing Ice for player starting area
+    
+    // Removing Ice for player starting center area
     for (int i = 30; i < 34; i++)
         for (int j = 4; j < 60; j++)
         {
             deleteIce(i, j);
         }
-
-//    // Randomly place 2 boulders
-//    int tmpX = rand() % 28;
-//    int tmpY = rand() % 59;
-//    m_boulders[0] = new Boulder(this, tmpX, tmpY);
-//    for (int i = tmpX; i < tmpX + 4; i++) {
-//        for (int j = tmpY; j < tmpY + 4; j++) {
-//            deleteIce(i, j);
-//        }
-//    }
-//    //Randomly place second boulder
-//    tmpX = rand() % 29 + 32;
-//    tmpY = rand() % 59;
-//    m_boulders[1] = new Boulder(this, tmpX, tmpY);
-//    Actors.push_back(m_boulders[0]);
-//    Actors.push_back(m_boulders[1]);
-//    for (int i = tmpX; i < tmpX + 4; i++) {
-//        for (int j = tmpY; j < tmpY + 4; j++) {
-//            deleteIce(i, j);
-//        }
-//    }
     
+    
+    // Creating boulders as well as deleing ice around
     int m_level = getLevel();
     int B = min(m_level/2+2, 9);
     for (int i = 0; i < B; i++){
-        int tmpX = rand() % 28;
-        int tmpY = rand() % 59;
-        Boulder* boulder = new Boulder(this, tmpX, tmpY);
+        x = rand() % 28;
+        y = rand() % 59;
+        Boulder* boulder = new Boulder(this, x, y);
         m_boulders.push_back(boulder);
         Actors.push_back(boulder);
-        for (int i = tmpX; i < tmpX + 4; i++) {
-            for (int j = tmpY; j < tmpY + 4; j++) {
+        for (int i = x; i < x + 4; i++) {
+            for (int j = y; j < y + 4; j++) {
                 deleteIce(i, j);
             }
         }
     }
-
+    
     setInfo();
+    
+    // Creating gold nuggets
     int tmp = 5 - getLevel() / 2;
     G = max(tmp, 2);
-
+    
     for (int i = 0; i<G ;i++){
-        int x = rand()%61;
-        int y = rand()%57;
+        x = rand()%61;
+        y = rand()%57;
         Actors.push_back(createGoldNugget(x, y));
     }
     
+    // Creating oil barrels
+    tmp = getLevel();
+    L = min(2 + tmp, 21);
+    for (int i = 0; i < L; i++){
+        x = rand()%61;
+        y = rand()%57;
+        OilBarrel* oil = new OilBarrel(this,x,y);
+        Actors.push_back(oil);
+        setBarrels(L);
+    }
     
-
+    
+    
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -116,18 +112,17 @@ bool StudentWorld::checkAlive() {
 int StudentWorld::move() {
     // Updating display text
     setInfo();
-
+    
     // IceMan's actions as long as player is alive
     while (checkAlive()) {
         m_iceman->doSomething();
-        
         
         //creating a traversal iterator
         list<Actor*>::iterator tmp = Actors.begin();
         
         //while we aren't at the end call each actors doSomething() reduce typing
         while(tmp != Actors.end()){auto it = *tmp; it->doSomething(); tmp++;}
-                
+        
         //problem here seems like sonars get called very often causing multiple sonars to exist in one location
         if (rand() % G == 0 && rand() % 5 == 0) {
             bool isArea = true;
@@ -142,11 +137,19 @@ int StudentWorld::move() {
                 Actors.push_back(sonar);
             }
         }
-
+        
+        if (barrelsLeft() == 0){
+            playSound(SOUND_FINISHED_LEVEL);
+            cleanUp();
+            return GWSTATUS_FINISHED_LEVEL;
+            
+        }
+        
+        
         return GWSTATUS_CONTINUE_GAME;
-
+        
     }
-
+    
     
     // If not alive, decrement lives
     decLives();
@@ -173,7 +176,7 @@ void StudentWorld::setInfo() {
     int sonar = m_iceman->getSonar();
     int nuggets = m_iceman->getNug();
     int score = getScore();
-
+    
     ostringstream oss;
     oss << "Lvl: " << setw(2) << level << "  Lives: " << setw(1) << lives << "  Hlth: " << setw(3) << health * 10 << "%  Wtr: " << setw(2) << water << "  Gld: " << setw(2) << nuggets << "  Oil Left: " << "  Sonar: " << setw(2) << sonar << "  Scr: ";
     oss.fill('0');
@@ -204,14 +207,33 @@ double StudentWorld::distance(int x1, int y1, int x2, int y2) {
 }
 
 void StudentWorld::revealHidden(int x, int y, int radius){
-        auto it = Actors.begin();
-        for (;it!=Actors.end(); it++)
+    auto it = Actors.begin();
+    for (;it!=Actors.end(); it++)
+    {
+        if ((*it)->revealablebysonar()==true && (*it)->getState() != dead )
         {
-            if ((*it)->revealablebysonar()==true )
-            {
-                if (sqrt(((*it)->getX()-x)*((*it)->getX()-x) + ((*it)->getY()-y)*((*it)->getY()-y))<12.0)
-                    (*it)->setVisible(true);
-            }
+            if (sqrt(((*it)->getX()-x)*((*it)->getX()-x) + ((*it)->getY()-y)*((*it)->getY()-y))<12.0)
+                (*it)->setVisible(true);
         }
     }
+}
 
+void StudentWorld::cleanUp()
+{
+    //delete the ice vector
+    for(int i=0;i<64;i++)
+        for (int j=0;j<60;j++)   // Changed from 64 to 60
+            if (m_ice[i][j]!=nullptr)
+                deleteIce(i, j);
+    if (m_iceman != nullptr) {
+        delete m_iceman;
+        m_iceman = nullptr;
+    }
+
+    list<Actor*>::iterator p=Actors.begin();
+    while (p!= Actors.end())
+    {
+        delete *p;
+        p=Actors.erase(p);
+    }
+}

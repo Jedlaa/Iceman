@@ -13,6 +13,7 @@ class Boulder;
 class GoldNugget;
 class Actor;
 class SonarKit;
+class OilBarrel;
 
 class StudentWorld : public GameWorld
 {
@@ -20,6 +21,8 @@ public:
     StudentWorld(std::string assetDir);
 
     virtual void setLives() {}
+    
+    virtual void cleanUp();
     
     virtual void revealHidden(int X, int Y, int radius);
 
@@ -29,7 +32,6 @@ public:
 
     virtual int move();
 
-    virtual void cleanUp() {}
 
     virtual int icemanPosX();
 
@@ -51,6 +53,11 @@ public:
 
     double distance(int x1, int y1, int x2, int y2);    // used for checking radius of gold nugget, iceman, protesters
 
+    void setBarrels(int n){barrels = n;}
+
+    void decBarrels(){barrels--;}
+    
+    int barrelsLeft(){return barrels;}
     //void deleteNug();
 
 private:
@@ -60,7 +67,10 @@ private:
     std::vector<Boulder*> m_boulders;
     GoldNugget* m_goldNugget;
     SonarKit* m_sonar;
-    int G;
+    OilBarrel* m_oil;
+    int G; //number of nuggets
+    int L; //number of barrels
+    int barrels;
 //    std::list<GoldNugget*> m_goldNuggets;
     
     //Protester* m_protester;
