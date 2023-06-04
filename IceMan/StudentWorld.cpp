@@ -92,7 +92,7 @@ int StudentWorld::init() {
     for (int i = 0; i < L; i++){
         x = rand()%61;
         y = rand()%57;
-        OilBarrel* oil = new OilBarrel(this,x,y);
+        OilBarrel* oil = new OilBarrel(this,30,30);
         Actors.push_back(oil);
         setBarrels(L);
     }
@@ -237,3 +237,55 @@ void StudentWorld::cleanUp()
         p=Actors.erase(p);
     }
 }
+
+
+int StudentWorld::randInt(int min, int max) {
+    return (min + (std::rand() % (max - min + 1)));
+}
+
+bool StudentWorld::isFacingIceman() {
+    int icemanX = m_iceman->getX();
+    int icemanY = m_iceman->getY();
+
+    int protesterX = m_regprotester->getX();
+    int protesterY = m_regprotester->getY();
+
+    // check if regular protester facing Iceman
+    if (protesterX == icemanX) {
+        // in same column
+        if (protesterY < icemanY && m_regprotester->getDirection() == GraphObject::up) {
+            return true;
+        }
+        if (protesterY > icemanY && m_regprotester->getDirection() == GraphObject::down) {
+            return true;
+        }
+    }
+    if (protesterY == icemanY) {
+        // in same row
+        if (protesterX < icemanX && m_regprotester->getDirection() == GraphObject::right) {
+            return true;
+        }
+        if (protesterX > icemanX && m_regprotester->getDirection() == GraphObject::left) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool StudentWorld::recentlyShouted() {
+    return m_ticksSinceLastShout <= 15;
+}
+
+void StudentWorld::flagRecentlyShouted() {
+    m_ticksSinceLastShout = 0;      // reset to 0 and increment each tick again
+}
+
+//void StudentWorld::createProtester(int level) {
+//    // probability of hardcore protester
+//
+//    // create reg protester
+//    RegularProtester* regprotester = new RegularProtester(this);
+//    Actors.push_back(regprotester);
+//
+//}

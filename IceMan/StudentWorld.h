@@ -14,6 +14,8 @@ class GoldNugget;
 class Actor;
 class SonarKit;
 class OilBarrel;
+class RegularProtester;
+
 
 class StudentWorld : public GameWorld
 {
@@ -59,6 +61,16 @@ public:
     
     int barrelsLeft(){return barrels;}
     //void deleteNug();
+    
+    int randInt(int min, int max);
+
+    bool isFacingIceman();
+
+    bool recentlyShouted();
+
+    void flagRecentlyShouted();
+
+    //void createProtester(int level);
 
 private:
     std::list<Actor*> Actors;
@@ -71,6 +83,9 @@ private:
     int G; //number of nuggets
     int L; //number of barrels
     int barrels;
+    RegularProtester* m_regprotester;
+    int m_ticksSinceLastShout;
+
 //    std::list<GoldNugget*> m_goldNuggets;
     
     //Protester* m_protester;

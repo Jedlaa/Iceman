@@ -65,6 +65,9 @@ private:
     int m_health;
 };
 
+
+
+
 class IceMan : public Agent {
 public:
     IceMan(StudentWorld* p);                                // Constructor with StudentWorld params
@@ -92,6 +95,22 @@ private:
     int m_nuggets;
 
 };
+
+
+
+class RegularProtester : public Agent {
+public:
+    RegularProtester(StudentWorld* p);
+    virtual void doSomething();
+
+private:
+    int numSquaresToMoveInCurrentDirection; // between 8 - 60
+    int m_health;                           // 5 hp
+    bool leaveOilFieldState;                // false
+    bool isAlive;
+    int ticksToWaitBetweenMoves;
+};
+
 
 
 class Boulder : public Actor {

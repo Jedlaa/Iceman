@@ -43,6 +43,16 @@ IceMan::IceMan(StudentWorld* p)
     m_nuggets = 0;
 }
 
+RegularProtester::RegularProtester(StudentWorld* p)
+    : Agent(p, 60, 60, left, IID_PROTESTER, 5) {
+    setVisible(true);
+    numSquaresToMoveInCurrentDirection = getWorld()->randInt(8, 60); // random int between 8 - 60
+    m_health = 5;                               // 5 hp
+    leaveOilFieldState = false;                // false
+    isAlive = true;
+    ticksToWaitBetweenMoves = max(0, static_cast<int>(3 - getWorld()->getLevel() / 4)); // static_cast bc max() uses int and unsigned int
+}
+
 // Boulder constructor
 Boulder::Boulder(StudentWorld* p, int startX, int startY)
     : Actor(p, IID_BOULDER, startX, startY, down, 1.0, 10.0) {
@@ -301,6 +311,49 @@ void OilBarrel::doSomething(){
         getWorld()->decBarrels();
     }
     
+}
+
+void RegularProtester::doSomething() {
+    // 1. check alive, if not, return
+    if (!isAlive) {
+        return;
+    }
+
+    // 2. check rest state (if waiting for turn to move),
+        // decr and return until 0 (meaning is protester's turn)
+    if (ticksToWaitBetweenMoves > 0) {
+        ticksToWaitBetweenMoves--;
+        return;
+    }
+
+    // 3. if in leaveOilFieldState (bc hp = 0)
+    if (leaveOilFieldState == true) {
+        // already at exit point (60,60), removes end of tick
+        if (getX() == 60 && getY() == 60) {
+            setState(dead);
+            return;
+        }
+        else {
+            //moveTowardsExit();      // DEFINE -----------------------------------------------------------
+            return;
+        }
+    }
+
+    // 4. check if within distance of 4 from Iceman
+        // AND currently facing Iceman's direction
+        // if both true and regular protester hasn't shouted within 15 non-resting ticks, shouts
+    if ((getWorld()->distance(getX(), getY(), getWorld()->icemanPosX(), getWorld()->icemanPosY()) <= 3.0)
+        && (getWorld()->isFacingIceman()) && (getWorld()->recentlyShouted() != true)) {
+        // 4.a. protester shouts
+        getWorld()->playSound(SOUND_PROTESTER_YELL);
+        // 4.b. iceman annoyed for 2 annoyance points (iceman -2 hp)
+        // annoyIceman(2);
+        // 4.c. flag to say protester shouted and needs to wait at least 15 non-resting seconds
+        getWorld()->flagRecentlyShouted();
+        return;
+    }
+
+    // 5.
 }
 
 
