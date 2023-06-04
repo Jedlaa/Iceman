@@ -47,9 +47,19 @@ public:
     virtual void doSomething(){};
     
     virtual ~Actor(){}
+    
+    int countdown;
+    
+    void SetCountdown(int c){countdown=c;}
+    
+    void CountminusOne(){countdown--; }
+    
+    int getCount(){return countdown;}
+
 
 private:
     State state;
+    
     StudentWorld* m_studentworld;
 };
 
@@ -94,6 +104,7 @@ private:
     int m_water;
     int m_nuggets;
 
+
 };
 
 
@@ -131,10 +142,10 @@ private:
 };
 
 
-class WaterGun : public Actor {
+class Squirt : public Actor {
 public:
-    WaterGun(StudentWorld* pointer, int x, int y, Direction d);
-
+    Squirt(StudentWorld* pointer, int x, int y, Direction d);
+    virtual void doSomething();
 };
 
 
@@ -195,6 +206,8 @@ public:
     virtual void doSomething(){}
     virtual void move(){}
 };
+
+
 
 
 #endif // ACTOR_H_

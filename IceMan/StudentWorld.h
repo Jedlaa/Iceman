@@ -5,6 +5,8 @@
 #include "GameConstants.h"
 #include <string>
 #include <list>
+#include "GraphObject.h"
+
 
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 class IceMan;
@@ -69,6 +71,9 @@ public:
     bool recentlyShouted();
 
     void flagRecentlyShouted();
+    
+    void CreateSquirt(int x, int y, GraphObject::Direction dir);
+
 
     //void createProtester(int level);
 

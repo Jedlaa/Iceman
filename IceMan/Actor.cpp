@@ -43,6 +43,7 @@ IceMan::IceMan(StudentWorld* p)
     m_nuggets = 0;
 }
 
+
 RegularProtester::RegularProtester(StudentWorld* p)
     : Agent(p, 60, 60, left, IID_PROTESTER, 5) {
     setVisible(true);
@@ -60,8 +61,14 @@ Boulder::Boulder(StudentWorld* p, int startX, int startY)
     }
 
 // WaterGun constructor
-WaterGun::WaterGun(StudentWorld* p, int x, int y, Direction d) 
-    : Actor(p, IID_WATER_SPURT, x, y, d, 1.0, 1) {}
+Squirt::Squirt(StudentWorld * pointer, int x, int y, Direction d):
+    Actor(pointer, IID_WATER_SPURT,x,y,d,1.0,1){
+    SetCountdown(4);
+    setState(stable);
+    if (checkIce(x, y, d)){
+        setState(dead);
+    }
+}
 
 // Ice constructor
 Ice::Ice(int startX, int startY) 
@@ -190,6 +197,28 @@ void IceMan::doSomething() {
             getWorld()->revealHidden(getX(), getY(), 12);
             decSonar();
         }
+        else if (move == KEY_PRESS_SPACE){
+            if (getWater() > 0){
+                decWater();
+                getWorld()->playSound(SOUND_PLAYER_SQUIRT);
+                if (getDirection()==down)
+                {
+                    getWorld()->CreateSquirt(getX(),getY()-4, getDirection());
+                }
+                else if (getDirection()==up)
+                {
+                    getWorld()->CreateSquirt(getX(),getY()+4, getDirection());
+                }
+                else if (getDirection()==right)
+                {
+                    getWorld()->CreateSquirt(getX()+4,getY(), getDirection());
+                }
+                else if (getDirection()==left)
+                {
+                    getWorld()->CreateSquirt(getX()-4,getY(), getDirection());
+                }
+            }
+        }
     }
 }
 
@@ -198,7 +227,7 @@ GoldNugget::GoldNugget(StudentWorld* p, int startX, int startY, bool flag)
     : Actor(p, IID_GOLD, startX, startY, right, 1.0, 2) {
     pos.push_back({ startX, startY });
 
-    setVisible(false);
+    setVisible(true);
 
     // Initializations
     isAlive = true;
@@ -221,7 +250,7 @@ void GoldNugget::doSomething() {
         // gold nugget must make itself visible & return
     if (!isVisible && getWorld()->distance(getX(), getY(), getWorld()->icemanPosY(), getWorld()->icemanPosY()) <= 4.0) {
         setVisible(true);
-        return;
+        //return;
     }
 
     // 3. Check if Gold Nugget is pickupable by Iceman (PickupStatus = true) & within a radius of 3.0
@@ -373,6 +402,24 @@ void SonarKit::doSomething(){
     //if essentially nothing happens then we decticks to decrease time it is alive
     else {decTicks();}
 }
+
+void Squirt::doSomething()
+{
+    //if (getWorld()->squirtannoyprotesters(getX(), getY())){setState(dead); return ;}
+    if (getCount() == 0) {
+        setState(dead);
+        setVisible(false);
+    }
+    if (checkIce(getX(), getY(), getDirection())){
+        setState(dead);
+        setVisible(false);
+    }
+    move(getDirection());
+    CountminusOne();
+    cout << getCount() << endl;
+    return;
+}
+
 
 
 void ActivatingObject::setTicksToLive(){

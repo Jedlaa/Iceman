@@ -289,3 +289,9 @@ void StudentWorld::flagRecentlyShouted() {
 //    Actors.push_back(regprotester);
 //
 //}
+
+void StudentWorld::CreateSquirt(int x, int y, GraphObject::Direction dir)
+{
+    auto squirt = new Squirt (this,x, y, dir);
+    Actors.push_back(squirt);
+}
