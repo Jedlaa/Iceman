@@ -79,6 +79,7 @@ Ice::Ice(int startX, int startY)
 SonarKit::SonarKit(StudentWorld* p, int startX, int startY)
     : ActivatingObject(p, startX, startY, IID_SONAR, SOUND_SONAR, true, false, false){
         setTicksToLive();
+        setState(stable);
         setVisible(true);
     }
 
@@ -227,7 +228,8 @@ GoldNugget::GoldNugget(StudentWorld* p, int startX, int startY, bool flag)
     : Actor(p, IID_GOLD, startX, startY, right, 1.0, 2) {
     pos.push_back({ startX, startY });
 
-    setVisible(true);
+    setVisible(false);
+    setState(stable);
 
     // Initializations
     isAlive = true;

@@ -38,8 +38,11 @@ public:
     //Setting the state for the actor
     virtual void setState(State s){state = s;}
     // Retrieval function for state
-    virtual State getState(){return state;}
+    State getState(){return state;}
     //Can an actor reveal goodies by sonar
+    
+    bool isDead(){if (state == dead) return true; return false;}
+    
     virtual bool revealablebysonar() const {return false;} // it can't
     
     virtual bool needsToBePikcedUpToFinishLevel() const{return false;}

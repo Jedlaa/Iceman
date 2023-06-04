@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 GameWorld* createStudentWorld(string assetDir)
 {
     return new StudentWorld(assetDir);
@@ -143,6 +144,18 @@ int StudentWorld::move() {
             cleanUp();
             return GWSTATUS_FINISHED_LEVEL;
             
+        }
+        
+        auto dead = Actors.begin();
+        while (dead != Actors.end())
+        {
+            if ((*dead)->isDead())
+            {
+                delete (*dead);
+                dead= Actors.erase(dead);
+                continue;
+            }
+            dead++;
         }
         
         
