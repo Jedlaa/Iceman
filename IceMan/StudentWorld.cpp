@@ -40,30 +40,30 @@ GoldNugget* StudentWorld::createGoldNugget(int x, int y) {
 }
 
 int StudentWorld::init() {
-    
-    int x,y;
+
+    int x, y;
     m_iceman = new IceMan(this);
-    
-    
+
+
     // Creating Ice arena
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 60; j++) {
             m_ice[i][j] = new Ice(i, j);
         }
     }
-    
+
     // Removing Ice for player starting center area
     for (int i = 30; i < 34; i++)
         for (int j = 4; j < 60; j++)
         {
             deleteIce(i, j);
         }
-    
-    
+
+
     // Creating boulders as well as deleing ice around
     int m_level = getLevel();
-    int B = min(m_level/2+2, 9);
-    for (int i = 0; i < B; i++){
+    int B = min(m_level / 2 + 2, 9);
+    for (int i = 0; i < B; i++) {
         x = rand() % 28;
         y = rand() % 59;
         Boulder* boulder = new Boulder(this, x, y);
@@ -75,41 +75,41 @@ int StudentWorld::init() {
             }
         }
     }
-    
+
     setInfo();
-    
-    C=getLevel()*25+300; // chance of adding goodies
-    int protester = 2+getLevel()*1.5;
-    P=min(15, protester); // num protesters
+
+    C = getLevel() * 25 + 300; // chance of adding goodies
+    int protester = 2 + getLevel() * 1.5;
+    P = min(15, protester); // num protesters
 
     // Creating gold nuggets
     int tmp = 5 - getLevel() / 2;
     G = max(tmp, 2);
-    
-    for (int i = 0; i<G ;i++){
-        x = rand()%61;
-        y = rand()%57;
+
+    for (int i = 0; i < G; i++) {
+        x = rand() % 61;
+        y = rand() % 57;
         Actors.push_back(createGoldNugget(x, y));
     }
-    
-    
+
+
     auto* Pro = new RegularProtester(this);
     Actors.push_back(Pro);
-    
-    
+
+
     // Creating oil barrels
     tmp = getLevel();
     L = min(2 + tmp, 21);
-    for (int i = 0; i < L; i++){
-        x = rand()%61;
-        y = rand()%57;
-        OilBarrel* oil = new OilBarrel(this,30,30);
+    for (int i = 0; i < L; i++) {
+        x = rand() % 61;
+        y = rand() % 57;
+        OilBarrel* oil = new OilBarrel(this, 30, 30);
         Actors.push_back(oil);
         setBarrels(L);
     }
-    
-    
-    
+
+
+
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -123,19 +123,19 @@ bool StudentWorld::checkAlive() {
 int StudentWorld::move() {
     // Updating display text
     setInfo();
-    
+
     // IceMan's actions as long as player is alive
     while (checkAlive()) {
         m_iceman->doSomething();
-        
+
         //creating a traversal iterator
         auto tmp = Actors.begin();
-        
+
         //while we aren't at the end call each actors doSomething() reduce typing
-        while(tmp != Actors.end()){auto it = *tmp; it->doSomething(); tmp++;}
-        
-        if (rand() % C == 0){
-            if(rand() % 5 == 0) {
+        while (tmp != Actors.end()) { auto it = *tmp; it->doSomething(); tmp++; }
+
+        if (rand() % C == 0) {
+            if (rand() % 5 == 0) {
                 bool isArea = true;
                 for (const auto& actor : Actors) {
                     if (actor->getX() == 0 && actor->getY() == 60) {
@@ -150,42 +150,42 @@ int StudentWorld::move() {
             }
             else
             {
-                int x=rand()%61; int y=rand()%61;
+                int x = rand() % 61; int y = rand() % 61;
                 while (!randompostionclear(x, y)) //keep generating new position if not clear.
                 {
-                    x=rand()%61; y=rand()%61;
+                    x = rand() % 61; y = rand() % 61;
                 }
-                WaterPool *water= new WaterPool(this, x,y);
+                WaterPool* water = new WaterPool(this, x, y);
                 Actors.push_back(water);
             }
         }
-            
-        
-        if (barrelsLeft() == 0){
+
+
+        if (barrelsLeft() == 0) {
             playSound(SOUND_FINISHED_LEVEL);
             cleanUp();
             return GWSTATUS_FINISHED_LEVEL;
-            
+
         }
-        
+
         auto dead = Actors.begin();
         while (dead != Actors.end())
         {
             if ((*dead)->isDead())
             {
                 delete (*dead);
-                dead= Actors.erase(dead);
+                dead = Actors.erase(dead);
                 continue;
             }
             dead++;
         }
-        
-        
+
+
         return GWSTATUS_CONTINUE_GAME;
-        
+
     }
-    
-    
+
+
     // If not alive, decrement lives
     decLives();
     return GWSTATUS_CONTINUE_GAME;
@@ -211,7 +211,7 @@ void StudentWorld::setInfo() {
     int sonar = m_iceman->getSonar();
     int nuggets = m_iceman->getNug();
     int score = getScore();
-    
+
     ostringstream oss;
     oss << "Lvl: " << setw(2) << level << "  Lives: " << setw(1) << lives << "  Hlth: " << setw(3) << health * 10 << "%  Wtr: " << setw(2) << water << "  Gld: " << setw(2) << nuggets << "  Oil Left: " << "  Sonar: " << setw(2) << sonar << "  Scr: ";
     oss.fill('0');
@@ -241,13 +241,13 @@ double StudentWorld::distance(int x1, int y1, int x2, int y2) {
     return sqrt((xx * xx) + (yy * yy));
 }
 
-void StudentWorld::revealHidden(int x, int y, int radius){
+void StudentWorld::revealHidden(int x, int y, int radius) {
     auto it = Actors.begin();
-    for (;it!=Actors.end(); it++)
+    for (; it != Actors.end(); it++)
     {
-        if ((*it)->revealablebysonar()==true && (*it)->getState() != dead )
+        if ((*it)->revealablebysonar() == true && (*it)->getState() != dead)
         {
-            if (sqrt(((*it)->getX()-x)*((*it)->getX()-x) + ((*it)->getY()-y)*((*it)->getY()-y))<12.0)
+            if (sqrt(((*it)->getX() - x) * ((*it)->getX() - x) + ((*it)->getY() - y) * ((*it)->getY() - y)) < 12.0)
                 (*it)->setVisible(true);
         }
     }
@@ -256,30 +256,30 @@ void StudentWorld::revealHidden(int x, int y, int radius){
 void StudentWorld::cleanUp()
 {
     //delete the ice vector
-    for(int i=0;i<64;i++)
-        for (int j=0;j<60;j++)   // Changed from 64 to 60
-            if (m_ice[i][j]!=nullptr)
+    for (int i = 0; i < 64; i++)
+        for (int j = 0; j < 60; j++)   // Changed from 64 to 60
+            if (m_ice[i][j] != nullptr)
                 deleteIce(i, j);
     if (m_iceman != nullptr) {
         delete m_iceman;
         m_iceman = nullptr;
     }
 
-    list<Actor*>::iterator p=Actors.begin();
-    while (p!= Actors.end())
+    list<Actor*>::iterator p = Actors.begin();
+    while (p != Actors.end())
     {
-        delete *p;
-        p=Actors.erase(p);
+        delete* p;
+        p = Actors.erase(p);
     }
 }
 
 bool StudentWorld::randompostionclear(int x, int y)
 {
-    
-    for (int i=0;i<4;i++)
-        for (int j=0;j<4;j++)
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
         {
-            if (m_ice[x+i][y+j]!=nullptr)
+            if (m_ice[x + i][y + j] != nullptr)
                 return false;
         }
     return true;
@@ -303,9 +303,12 @@ bool StudentWorld::isFacingIceman() {
         if (protesterY < icemanY && m_regprotester->getDirection() == GraphObject::up) {
             return true;
         }
-        if (protesterY > icemanY && m_regprotester->getDirection() == GraphObject::down) {
+        else if (protesterY > icemanY && m_regprotester->getDirection() == GraphObject::down) {
             return true;
         }
+        //else {
+        //    return false;
+        //}
     }
     if (protesterY == icemanY) {
         // in same row
@@ -315,13 +318,28 @@ bool StudentWorld::isFacingIceman() {
         if (protesterX > icemanX && m_regprotester->getDirection() == GraphObject::left) {
             return true;
         }
+        //else {
+        //    return false;
+        //}
     }
 
     return false;
 }
 
+void StudentWorld::setTicks(int ticks) {
+    m_ticksSinceLastShout = ticks;
+}
+
+int StudentWorld::getTicks() {
+    return m_ticksSinceLastShout;
+}
+
+void StudentWorld::incrTicksSinceLastShout() {
+    m_ticksSinceLastShout++;
+}
+
 bool StudentWorld::recentlyShouted() {
-    return m_ticksSinceLastShout <= 15;
+    return m_ticksSinceLastShout <= 150;
 }
 
 void StudentWorld::flagRecentlyShouted() {
@@ -339,23 +357,69 @@ void StudentWorld::flagRecentlyShouted() {
 
 void StudentWorld::CreateSquirt(int x, int y, GraphObject::Direction dir)
 {
-    auto squirt = new Squirt (this,x, y, dir);
+    auto squirt = new Squirt(this, x, y, dir);
     Actors.push_back(squirt);
 }
 
-bool StudentWorld::squirtAnnoy(int x, int y){
+bool StudentWorld::squirtAnnoy(int x, int y) {
     bool b = false;
     auto p = Actors.begin();
-    for (;p!=Actors.end(); p++){
-        if ((*p)->annoyable()==true )
+    for (; p != Actors.end(); p++) {
+        if ((*p)->annoyable() == true)
         {
-            if (sqrt(((*p)->getX()-x)*((*p)->getX()-x) + ((*p)->getY()-y)*((*p)->getY()-y))<=3.0)
+            if (sqrt(((*p)->getX() - x) * ((*p)->getX() - x) + ((*p)->getY() - y) * ((*p)->getY() - y)) <= 3.0)
             {
                 (*p)->decHealth(2);
                 //if ((*p)->gethealth()>0) playSound(SOUND_PROTESTER_ANNOYED);
-                b=true;
+                b = true;
             }
         }
     }
     return b;
+}
+
+bool StudentWorld::isPathClear(int startX, int startY, int endX, int endY) {
+    int x = startX;
+    int y = startY;
+
+    // check move direction
+    GraphObject::Direction dir;
+    if (endX > startX) { dir = GraphObject::right; }
+    else if (endX < startX) { dir = GraphObject::left; }
+    else if (endY > startY) { dir = GraphObject::up; }
+    else if (endY < startY) { dir = GraphObject::down; }
+    else { return true; }   // meaning same start and end point
+
+    // check obstacles
+    while (x != endX || y != endY) {
+        if (dir == GraphObject::right) { x += 1; }
+        else if (dir == GraphObject::left) { x -= 1; }
+        else { x += 0; }
+
+        if (dir == GraphObject::up) { y += 1; }
+        else if (dir == GraphObject::down) { y -= 1; }
+        else { y += 0; }
+
+        // ice & boulder check
+        if (!getIce(x, y) && checkBoulder(x, y)) {
+            // boulder in path
+            return false;
+        }
+    }
+
+    // path clear
+    return true;
+
+
+}
+
+bool StudentWorld::hasIce(int x, int y) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (m_ice[x + i][y + j] != nullptr) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

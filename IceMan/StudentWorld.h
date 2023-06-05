@@ -5,6 +5,7 @@
 #include "GameConstants.h"
 #include <string>
 #include <list>
+#include <vector>
 #include "GraphObject.h"
 
 
@@ -26,9 +27,9 @@ public:
     StudentWorld(std::string assetDir);
 
     virtual void setLives() {}
-    
+
     virtual void cleanUp();
-    
+
     virtual void revealHidden(int X, int Y, int radius);
 
     virtual bool checkAlive();
@@ -54,17 +55,17 @@ public:
 
     IceMan* getIceMan() { return m_iceman; }
 
-//    GoldNugget* getGoldNugget() { return m_goldNugget; }
+    //    GoldNugget* getGoldNugget() { return m_goldNugget; }
 
     double distance(int x1, int y1, int x2, int y2);    // used for checking radius of gold nugget, iceman, protesters
 
-    void setBarrels(int n){barrels = n;}
+    void setBarrels(int n) { barrels = n; }
 
-    void decBarrels(){barrels--;}
-    
-    int barrelsLeft(){return barrels;}
+    void decBarrels() { barrels--; }
+
+    int barrelsLeft() { return barrels; }
     //void deleteNug();
-    
+
     int randInt(int min, int max);
 
     bool isFacingIceman();
@@ -72,18 +73,24 @@ public:
     bool recentlyShouted();
 
     void flagRecentlyShouted();
-    
+
     void CreateSquirt(int x, int y, GraphObject::Direction dir);
-    
+
     bool squirtAnnoy(int x, int y);
-    
+
     bool randompostionclear(int x, int y);
 
+    bool isPathClear(int startX, int startY, int endX, int endY);
 
-
+    bool hasIce(int x, int y);
 
     //void createProtester(int level);
 
+    void incrTicksSinceLastShout();
+
+    int getTicks();
+
+    void setTicks(int ticks);
 private:
     std::list<Actor*> Actors;
     IceMan* m_iceman;
@@ -97,13 +104,13 @@ private:
     int C; // chance of adding goodies
     int P; // num of protesters 
     int barrels;
-    
+
     RegularProtester* m_regprotester;
     int m_ticksSinceLastShout;
 
-//    std::list<GoldNugget*> m_goldNuggets;
-    
-    //Protester* m_protester;
+    //    std::list<GoldNugget*> m_goldNuggets;
+
+        //Protester* m_protester;
 };
 
 #endif // STUDENTWORLD_H_
